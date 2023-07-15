@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using Zenject;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class PlayerBossFightController : Fighter
@@ -20,11 +20,7 @@ public class PlayerBossFightController : Fighter
     public BossManager BossManager { get; private set; }
     public Transform Boss { get; private set; }
 
-    public static event Action OnPlayerWinEvent;
-
-    [Inject] private EventManager eventManager;
-
-    private void Start()
+    private void Awake()
     {
         Initialize();
     }
@@ -41,8 +37,6 @@ public class PlayerBossFightController : Fighter
         MaxDistance = _maxDistance;
         SpawnParticle = _spawnParticle;
         DeathParticle = _deathParticle;
-
-        OnPlayerWinEvent += PlayerWin;
     }
 
     private void Update()
@@ -58,7 +52,7 @@ public class PlayerBossFightController : Fighter
                     if (_distanceToBoss.sqrMagnitude <= MaxDistance * MaxDistance)
                     {
                         PlayerManager.Attack = true;
-                        PlayerManager.GameState = false;
+                        PlayerManager.IsGame = false;
                     }
 
                     if (PlayerManager.Attack && Member)
@@ -82,13 +76,6 @@ public class PlayerBossFightController : Fighter
                 {
                     Fight = false;
                 }
-            }
-        }
-        else
-        {
-            if (!BossManager.BossIsAlive)
-            {
-                //EventManager.OnPlayerWin?.Invoke();
             }
         }
     }
@@ -121,27 +108,7 @@ public class PlayerBossFightController : Fighter
                 GameObject particleEffect = Instantiate(DeathParticle, transform.position, transform.rotation);
                 Destroy(particleEffect, particleDuration);
 
-                if (gameObject.name != PlayerManager.RigidbodyList.ElementAt(0).name)
-                {
-                    gameObject.SetActive(false);
-                    transform.parent = null;
-                }
-                else
-                {
-                    _capsCollider.enabled = false;
-                    transform.GetChild(0).gameObject.SetActive(false);
-                    transform.GetChild(1).gameObject.SetActive(false);
-                }
-
-                for (int i = 0; i < PlayerManager.RigidbodyList.Count; i++)
-                {
-                    if (PlayerManager.RigidbodyList.ElementAt(i).name == gameObject.name)
-                    {
-                        PlayerManager.RigidbodyList.RemoveAt(i);
-                    }
-                }
-                Destroy(gameObject);
-                BossManager.LockOnTarget = false;
+                PlayerManager.EventManager.PlayerZeroHealthDeath(gameObject, transform);
                 break;
             }
         }
@@ -152,16 +119,7 @@ public class PlayerBossFightController : Fighter
         GameObject particleEffect = Instantiate(DeathParticle, transform.position, transform.rotation);
         Destroy(particleEffect, particleDuration);
 
-        gameObject.SetActive(false);
-        transform.parent = null;
-
-        for (int i = 0; i < PlayerManager.RigidbodyList.Count; i++)
-        {
-            if (PlayerManager.RigidbodyList.ElementAt(i).name == gameObject.name)
-            {
-                PlayerManager.RigidbodyList.RemoveAt(i);
-            }
-        }
+        PlayerManager.EventManager.PlayerObstacleDeath(gameObject, transform);
     }
 
     public void ChangeAttack()
@@ -177,10 +135,5 @@ public class PlayerBossFightController : Fighter
     public void TakeDamage()
     {
         BossManager.GetDamage();
-    }
-
-    private void PlayerWin()
-    {
-
     }
 }

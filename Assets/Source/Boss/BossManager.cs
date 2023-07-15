@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Zenject;
 
 public class BossManager : Fighter
 {
@@ -21,6 +22,7 @@ public class BossManager : Fighter
     [SerializeField] private TMP_Text _healthbarAmount;
     public PlayerManager PlayerManager { get; private set;}
     public Boss Boss { get; private set;}
+    [Inject] private EventManager eventManager;
 
     private void Start()
     {
@@ -47,38 +49,43 @@ public class BossManager : Fighter
         _enemyList = PlayerManager.RigidbodyList;
         foreach (var enemy in _enemyList)
         {
-                if (enemy != null && enemy.gameObject.activeSelf)
+            if (enemy != null && enemy.gameObject.activeSelf)
+            {
+                var enemyDistance = enemy.transform.position - transform.position;
+                if (enemyDistance.sqrMagnitude < MaxDistance * MaxDistance && !LockOnTarget)
                 {
-                    var enemyDistance = enemy.transform.position - transform.position;
-                    if (enemyDistance.sqrMagnitude < MaxDistance * MaxDistance && !LockOnTarget)
-                    {
-                        _target = enemy.transform;
-                        Animator.SetBool("Fight", true);
+                    _target = enemy.transform;
+                    Animator.SetBool("Fight", true);
 
-                        transform.position = Vector3.MoveTowards(transform.position, _target.position, 1f * Time.deltaTime);
-                    }
-                    if (enemyDistance.sqrMagnitude < MinDistance * MinDistance)
-                    {
-                        LockOnTarget = true;
-                    }
+                    transform.position = Vector3.MoveTowards(transform.position, _target.position, 1f * Time.deltaTime);
                 }
-                else
+                if (enemyDistance.sqrMagnitude < MinDistance * MinDistance)
                 {
-                    LockOnTarget = false;
-                    break;
+                        LockOnTarget = true;
                 }
+            }
+            else
+            {
+                LockOnTarget = false;
+                break;
+            }
+
             if (LockOnTarget)
             {
                 FightWithTarget(_target);
 
             }
         }
-
-        if (PlayerManager.RigidbodyList.Count == 0)
+        if (PlayerManager.RigidbodyList.Count <= 0)
         {
-            Animator.SetBool("Fight", false);
-            Animator.SetFloat("AttackMode", 5f);
+            PlayerManager.IsGame = false;
+            eventManager.PlayerLose(Animator);
         }
+    }
+
+    private void FixedUpdate()
+    {
+        
     }
 
     public override void GetDamage()
@@ -94,14 +101,11 @@ public class BossManager : Fighter
         if (Health <= 0 && BossIsAlive)
         {
             Health = 0;
-            GameObject particleEffect = Instantiate(DeathParticle, transform.position, transform.rotation);
-            // ”ничтожаем эффект по окончании длительности
-            Destroy(particleEffect, particleDuration);
-            //Instantiate(DeathParticle, SpawnParticle.position, Quaternion.identity);
-            //gameObject.SetActive(false);
-            Destroy(gameObject);
+            //eventManager.BossDie(BossIsAlive);
             BossIsAlive = false;
-            // ”станавливаем Rigidbody босса в null
+            GameObject particleEffect = Instantiate(DeathParticle, transform.position, transform.rotation);
+            Destroy(particleEffect, particleDuration);
+            gameObject.SetActive(false);
             Rigidbody = null;
         }
     }

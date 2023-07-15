@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -9,26 +10,32 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float _roadSpeed;
     [SerializeField] private Transform _road;
     public bool MoveTouch;
-    public bool GameState;
+    public bool IsGame;
     public bool Attack;
     private Vector3 _direction;
 
     public List<Rigidbody> _rigidbodyList = new List<Rigidbody>();
     public List<Rigidbody> RigidbodyList { get; private set; }
     public BossManager BossManager { get; private set; }
+    public EventManager EventManager { get; private set; }
+    [Inject] private EventManager eventManager;
+
+    private void Awake()
+    {
+        EventManager = eventManager;
+        _rigidbodyList.Add(transform.GetChild(0).GetComponent<Rigidbody>());
+        RigidbodyList = _rigidbodyList;
+    }
 
     private void Start()
     {
-
         BossManager = GameObject.FindObjectOfType<BossManager>();
-        _rigidbodyList.Add(transform.GetChild(0).GetComponent<Rigidbody>());
-        RigidbodyList = _rigidbodyList;
-        GameState = true;
+        IsGame = true;
     }
 
     private void Update()
     {
-        if (GameState)
+        if (IsGame)
         {
             //MoveInput();
             if (MoveInput())
@@ -60,20 +67,14 @@ public class PlayerManager : MonoBehaviour
         {
             if (!BossManager.BossIsAlive)
             {
-                foreach (var _playerRigidbody in RigidbodyList)
-                {
-                    _playerRigidbody.GetComponent<Animator>().SetBool("Fight", false);
-                    _playerRigidbody.GetComponent<Animator>().SetBool("Win", true);
-                    //SetBoolParametres(RigidbodyList, "Fight", false);
-                    //SetBoolParametres(RigidbodyList, "Win", true);
-                }
+                EventManager.PlayerWin(RigidbodyList);
             }
         }
     }
 
     private void FixedUpdate()
     {
-        if (GameState)
+        if (IsGame)
         {
             if (MoveInput())
             {
