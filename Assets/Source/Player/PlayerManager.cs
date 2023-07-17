@@ -4,14 +4,16 @@ using Zenject;
 
 public class PlayerManager : MonoBehaviour
 {
+    public bool MoveTouch;
+    public bool IsGame;
+    public bool Attack;
+
     [SerializeField] private float _playerHorizontalSpeed;
     [SerializeField] private float _velocity;
     [SerializeField] private float _swipeSensetive;
     [SerializeField] private float _roadSpeed;
-    [SerializeField] private Transform _road;
-    public bool MoveTouch;
-    public bool IsGame;
-    public bool Attack;
+    [SerializeField] public Transform _road;
+
     private Vector3 _direction;
 
     public List<Rigidbody> _rigidbodyList = new List<Rigidbody>();
@@ -22,26 +24,35 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        EventManager = eventManager;
+        Initialize();
         _rigidbodyList.Add(transform.GetChild(0).GetComponent<Rigidbody>());
-        RigidbodyList = _rigidbodyList;
+        
     }
 
-    private void Start()
+    private void Initialize()
     {
+        EventManager = eventManager;
+        RigidbodyList = _rigidbodyList;
         BossManager = GameObject.FindObjectOfType<BossManager>();
-        IsGame = true;
     }
 
     private void Update()
     {
         if (IsGame)
         {
-            //MoveInput();
             if (MoveInput())
             {
-                _direction = new Vector3(Mathf.Lerp(_direction.x, Input.GetAxis("Mouse X"), _playerHorizontalSpeed * Time.deltaTime), 0f);
-                _direction = Vector3.ClampMagnitude(_direction, 1f);
+                if (IsMobileDevice())
+                {
+                    Touch touch = Input.GetTouch(0);
+                    _direction = new Vector3(Mathf.Lerp(_direction.x, touch.deltaPosition.x, _playerHorizontalSpeed * Time.deltaTime), 0f);
+                    _direction = Vector3.ClampMagnitude(_direction, 1f);
+                }
+                else
+                {
+                    _direction = new Vector3(Mathf.Lerp(_direction.x, Input.GetAxis("Mouse X"), _playerHorizontalSpeed * Time.deltaTime), 0f);
+                    _direction = Vector3.ClampMagnitude(_direction, 1f);
+                }
 
                 _road.position = new Vector3(0f, 0f, Mathf.SmoothStep(_road.position.z, -100f, _roadSpeed * Time.deltaTime));
                 SetFloatParametres(RigidbodyList, "Run", 1);
@@ -65,6 +76,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
+            MoveTouch = false;
             if (!BossManager.BossIsAlive)
             {
                 EventManager.PlayerWin(RigidbodyList);
@@ -96,13 +108,31 @@ public class PlayerManager : MonoBehaviour
 
     private bool MoveInput()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (IsMobileDevice())
         {
-            MoveTouch = true;
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began)
+                {
+                    MoveTouch = true;
+                }
+                else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                {
+                    MoveTouch = false;
+                }
+            }
         }
-        else if(Input.GetMouseButtonUp(0))
+        else
         {
-            MoveTouch = false;
+            if (Input.GetMouseButtonDown(0))
+            {
+                MoveTouch = true;
+            }
+            else if(Input.GetMouseButtonUp(0))
+            {
+                MoveTouch = false;
+            }
         }
         return MoveTouch;
     }
@@ -132,5 +162,16 @@ public class PlayerManager : MonoBehaviour
             if (element != null && element.gameObject.activeSelf)
                 element.GetComponent<Animator>().SetFloat(name, Random.Range(valueMin, valueMax));
         }
+    }
+
+    private bool IsMobileDevice()
+    {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        return false;
+#elif UNITY_ANDROID || UNITY_IOS || UNITY_IPHONE
+    return true;
+#else
+    return false;
+#endif
     }
 }

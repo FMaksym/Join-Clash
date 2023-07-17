@@ -1,7 +1,4 @@
-using System;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class PlayerBossFightController : Fighter
@@ -20,7 +17,7 @@ public class PlayerBossFightController : Fighter
     public BossManager BossManager { get; private set; }
     public Transform Boss { get; private set; }
 
-    private void Awake()
+    private void Start()
     {
         Initialize();
     }
@@ -30,6 +27,7 @@ public class PlayerBossFightController : Fighter
         PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
         BossManager = GameObject.FindObjectOfType<BossManager>();
         Boss = GameObject.FindObjectOfType<BossManager>().transform;
+        _capsCollider = GetComponent<CapsuleCollider>();
         Rigidbody = GetComponent<Rigidbody>();
         Animator = GetComponent<Animator>();
         Health = _health;
@@ -105,10 +103,11 @@ public class PlayerBossFightController : Fighter
         {
             if (Health <= 0 && player.gameObject.activeSelf)
             {
-                GameObject particleEffect = Instantiate(DeathParticle, transform.position, transform.rotation);
+                GameObject particleEffect = Instantiate(DeathParticle, new Vector3(transform.position.x, 0.33f, transform.position.z), transform.rotation, PlayerManager._road);
                 Destroy(particleEffect, particleDuration);
 
-                PlayerManager.EventManager.PlayerZeroHealthDeath(gameObject, transform);
+                PlayerManager.EventManager.PlayerZeroHealthDeath(PlayerManager.RigidbodyList, BossManager._enemyList, _capsCollider, gameObject, transform);
+                Rigidbody.velocity = Vector3.zero;
                 break;
             }
         }
@@ -116,10 +115,11 @@ public class PlayerBossFightController : Fighter
 
     private void DieFromObstacle()
     {
-        GameObject particleEffect = Instantiate(DeathParticle, transform.position, transform.rotation);
-        Destroy(particleEffect, particleDuration);
+        PlayerManager.EventManager.PlayerObstacleDeath(PlayerManager.RigidbodyList, BossManager._enemyList, _capsCollider, gameObject, transform);
 
-        PlayerManager.EventManager.PlayerObstacleDeath(gameObject, transform);
+        GameObject particleEffect = Instantiate(DeathParticle, new Vector3(transform.position.x, 0.33f, transform.position.z) , transform.rotation, PlayerManager._road);
+        Destroy(particleEffect, particleDuration);
+        Rigidbody.velocity = Vector3.zero;
     }
 
     public void ChangeAttack()
@@ -134,6 +134,9 @@ public class PlayerBossFightController : Fighter
 
     public void TakeDamage()
     {
-        BossManager.GetDamage();
+        if (Random.Range(0,10) > 0)
+        {
+            BossManager.GetDamage();
+        }
     }
 }

@@ -14,22 +14,33 @@ public class BossManager : Fighter
     [SerializeField] private float _minDistance;
     [SerializeField] private float _maxDistance;
     [SerializeField] private float _attackMode;
-    [SerializeField] private List<Rigidbody> _enemyList = new List<Rigidbody>();
+    public List<Rigidbody> _enemyList = new List<Rigidbody>();
+    [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private Transform _target;
     [SerializeField] private Transform _spawnParticle;
     [SerializeField] private GameObject _deathParticle;
     [SerializeField] private Slider _healthbar;
     [SerializeField] private TMP_Text _healthbarAmount;
+
     public PlayerManager PlayerManager { get; private set;}
     public Boss Boss { get; private set;}
     [Inject] private EventManager eventManager;
 
+    public new int Health
+    {
+        get { return _health; }
+        set { _health = value; }
+    }
+
+    private void Awake()
+    {
+        Initialize();
+    }
+
     private void Start()
     {
-        _healthbar.value = _healthbar.maxValue = _health = 50;
+        _healthbar.value = _healthbar.maxValue = _health = 150;
         _healthbarAmount.text = _health.ToString();
-        BossIsAlive = true;
-        Initialize();
     }
 
     private void Initialize()
@@ -37,11 +48,12 @@ public class BossManager : Fighter
         PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
         Boss = GetComponent<Boss>();
         Animator = GetComponent<Animator>();
-        Health = _health;
         MinDistance = _minDistance;
         MaxDistance = _maxDistance;
         SpawnParticle = _spawnParticle;
         DeathParticle = _deathParticle;
+        Rigidbody = _rigidbody;
+        BossIsAlive = true;
     }
 
     private void Update()
@@ -61,7 +73,7 @@ public class BossManager : Fighter
                 }
                 if (enemyDistance.sqrMagnitude < MinDistance * MinDistance)
                 {
-                        LockOnTarget = true;
+                    LockOnTarget = true;
                 }
             }
             else
@@ -73,7 +85,7 @@ public class BossManager : Fighter
             if (LockOnTarget)
             {
                 FightWithTarget(_target);
-
+                Rigidbody.velocity = Vector3.zero;
             }
         }
         if (PlayerManager.RigidbodyList.Count <= 0)
@@ -83,31 +95,31 @@ public class BossManager : Fighter
         }
     }
 
-    private void FixedUpdate()
-    {
-        
-    }
-
     public override void GetDamage()
     {
-        Health--;
-        _healthbar.value = Health;
-        _healthbarAmount.text = Health.ToString();
-        Die();
+        if (Health > 0 && BossIsAlive)
+        {
+            _health--;
+            Health -= 1;
+            _healthbar.value = Health;
+            _healthbarAmount.text = Health.ToString();
+            Debug.Log("Boss Take Damage");
+        }
+        else if (Health <= 0 && BossIsAlive)
+        {
+            Die();
+        }
     }
 
     public override void Die()
     {
-        if (Health <= 0 && BossIsAlive)
-        {
-            Health = 0;
-            //eventManager.BossDie(BossIsAlive);
-            BossIsAlive = false;
-            GameObject particleEffect = Instantiate(DeathParticle, transform.position, transform.rotation);
-            Destroy(particleEffect, particleDuration);
-            gameObject.SetActive(false);
-            Rigidbody = null;
-        }
+        Debug.Log("Boss Die");
+        Health = 0;
+        BossIsAlive = false;
+        GameObject particleEffect = Instantiate(DeathParticle, transform.position, transform.rotation);
+        Destroy(particleEffect, particleDuration);
+        gameObject.SetActive(false);
+        Rigidbody = null;
     }
 
     public void ChangeBossAttack()
