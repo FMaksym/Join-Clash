@@ -3,7 +3,17 @@ guid: e7cce80899c29204c869e2415257a5cc
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black_Cirlce
+    second: {fileID: 2100000, guid: d9ebaffcf98f9744588e216080513391, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Blade
+    second: {fileID: 2100000, guid: 23195d00237654e4db9ac1c16a1d3c23, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

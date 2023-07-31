@@ -83,7 +83,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -5761903855786713811, guid: f28800d3849d0a5469f8038ce0edf7e1, type: 3}
+  - {fileID: 2100000, guid: daffac63052840543a114821592bacc4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -331,7 +331,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -5761903855786713811, guid: f28800d3849d0a5469f8038ce0edf7e1, type: 3}
+  - {fileID: 2100000, guid: daffac63052840543a114821592bacc4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1341,7 +1341,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8830196273332348141, guid: f28800d3849d0a5469f8038ce0edf7e1, type: 3}
+  - {fileID: 2100000, guid: d9ebaffcf98f9744588e216080513391, type: 2}
   - {fileID: 8578991229988381114, guid: f28800d3849d0a5469f8038ce0edf7e1, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -1595,7 +1595,8 @@ GameObject:
   - component: {fileID: 5933900580618423264}
   - component: {fileID: 4869862911333055216}
   - component: {fileID: 1936508140}
-  - component: {fileID: 8433277842018196671}
+  - component: {fileID: 7483133148724025943}
+  - component: {fileID: 2206116489098603022}
   m_Layer: 0
   m_Name: batman_ToAdd
   m_TagString: Untagged
@@ -1681,7 +1682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb3652312f03ab64a8cf17ca7ddc8095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8433277842018196671
+--- !u!114 &7483133148724025943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1690,18 +1691,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 5270821194481462381}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26ddf9e726bb00745a7a1f14743a2071, type: 3}
+  m_Script: {fileID: 11500000, guid: 2842c9de6a5c1ab4eb0041d7db6200c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 5
+  Member: 0
   _minDistance: 0.5
   _maxDistance: 1.5
   _moveSpeed: 1
-  particleDuration: 5
   Fight: 0
-  Member: 0
-  _capsCollider: {fileID: 0}
-  _spawnParticle: {fileID: 0}
+--- !u!114 &2206116489098603022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5270821194481462381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69ffe55dd4e6f44dbc6686322cddbbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 5
+  particleDuration: 5
   _deathParticle: {fileID: 3010439496153895816, guid: 58bf85bbb38346f46b2588b0fa8e7e31,
     type: 3}
 --- !u!1 &5306370425162324128
@@ -2012,10 +2023,10 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8830196273332348141, guid: f28800d3849d0a5469f8038ce0edf7e1, type: 3}
-  - {fileID: -4971594290552944009, guid: f28800d3849d0a5469f8038ce0edf7e1, type: 3}
-  - {fileID: 7182259056892446755, guid: f28800d3849d0a5469f8038ce0edf7e1, type: 3}
-  - {fileID: 1655422142602207159, guid: f28800d3849d0a5469f8038ce0edf7e1, type: 3}
+  - {fileID: 2100000, guid: d9ebaffcf98f9744588e216080513391, type: 2}
+  - {fileID: 2100000, guid: d1785acc212fc0246be31c3b66247a8f, type: 2}
+  - {fileID: 2100000, guid: d9ebaffcf98f9744588e216080513391, type: 2}
+  - {fileID: 2100000, guid: a226842523661714f9f9138f30bac9ac, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

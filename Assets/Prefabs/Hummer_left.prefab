@@ -57,16 +57,16 @@ MeshRenderer:
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6922793697723135513, guid: e7cce80899c29204c869e2415257a5cc, type: 3}
-  - {fileID: 4874126678125670354, guid: e7cce80899c29204c869e2415257a5cc, type: 3}
-  - {fileID: -3846018093981099296, guid: e7cce80899c29204c869e2415257a5cc, type: 3}
+  - {fileID: 2100000, guid: 5115fe79e9c8f9e4980a79da01af6cc0, type: 2}
+  - {fileID: 2100000, guid: fdf0fba6c9c42d648ba08ffa3ca35718, type: 2}
+  - {fileID: 2100000, guid: 5115fe79e9c8f9e4980a79da01af6cc0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

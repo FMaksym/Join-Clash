@@ -90,14 +90,14 @@ MeshRenderer:
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5988347114677481029, guid: e7cce80899c29204c869e2415257a5cc, type: 3}
+  - {fileID: 2100000, guid: 23195d00237654e4db9ac1c16a1d3c23, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -211,15 +211,15 @@ MeshRenderer:
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5695511776142808553, guid: e7cce80899c29204c869e2415257a5cc, type: 3}
-  - {fileID: -6478536213147159724, guid: e7cce80899c29204c869e2415257a5cc, type: 3}
+  - {fileID: 2100000, guid: 73b1383727f8064449e7a516a90fe489, type: 2}
+  - {fileID: 2100000, guid: d9ebaffcf98f9744588e216080513391, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

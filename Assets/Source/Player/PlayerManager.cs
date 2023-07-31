@@ -18,14 +18,15 @@ public class PlayerManager : MonoBehaviour
 
     public List<Rigidbody> _rigidbodyList = new List<Rigidbody>();
     public List<Rigidbody> RigidbodyList { get; private set; }
-    public BossManager BossManager { get; private set; }
+    public BossAttackManager BossManager { get; private set; }
     public EventManager EventManager { get; private set; }
     [Inject] private EventManager eventManager;
 
     private void Awake()
     {
         Initialize();
-        _rigidbodyList.Add(transform.GetChild(0).GetComponent<Rigidbody>());
+        _rigidbodyList.Add(GetComponentInChildren<Rigidbody>());
+        //_rigidbodyList.Add(transform.GetChild(0).GetComponent<Rigidbody>());
         
     }
 
@@ -33,7 +34,12 @@ public class PlayerManager : MonoBehaviour
     {
         EventManager = eventManager;
         RigidbodyList = _rigidbodyList;
-        BossManager = GameObject.FindObjectOfType<BossManager>();
+        BossManager = GameObject.FindObjectOfType<BossAttackManager>();
+        if (IsMobileDevice())
+        {
+            _playerHorizontalSpeed = 3;
+            _swipeSensetive = 70;
+        }
     }
 
     private void Update()

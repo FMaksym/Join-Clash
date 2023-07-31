@@ -16,7 +16,7 @@ public class Recruitment : MonoBehaviour
             Destroy(other.collider.GetComponent<PlayerToAdd>());
             PlayerManager.RigidbodyList.Add(other.collider.GetComponent<Rigidbody>());
 
-            other.gameObject.GetComponent<PlayerBossFightController>().Member = true;
+            other.gameObject.GetComponent<PlayerAttackManager>().Member = true;
 
             other.collider.transform.parent = null;
             other.collider.transform.parent = PlayerManager.transform;
