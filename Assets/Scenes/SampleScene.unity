@@ -7424,6 +7424,16 @@ PrefabInstance:
       propertyPath: m_WarningMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7500787982371700359, guid: e90206646fb468e448fcb27bb81129af,
+        type: 3}
+      propertyPath: _health
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7500787982371700360, guid: e90206646fb468e448fcb27bb81129af,
+        type: 3}
+      propertyPath: _maxDistance
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e90206646fb468e448fcb27bb81129af, type: 3}
 --- !u!4 &7500787982371700349 stripped
@@ -7508,6 +7518,11 @@ PrefabInstance:
       propertyPath: _road
       value: 
       objectReference: {fileID: 20047551}
+    - target: {fileID: 8347775550673316226, guid: 72d4d746fc3d5654cb83260e6ae53354,
+        type: 3}
+      propertyPath: _roadSpeed
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 8347775550673316227, guid: 72d4d746fc3d5654cb83260e6ae53354,
         type: 3}
       propertyPath: m_RootOrder

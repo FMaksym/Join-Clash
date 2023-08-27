@@ -33,7 +33,7 @@ public class EventManager : MonoBehaviour
 
         for (int i = 0; i < playerList.Count; i++)
         {
-            if (playerList.ElementAt(i).name == player.name)
+            if (playerList.ElementAt(i).name == player.name || playerList.ElementAt(i).gameObject.activeSelf == false)
             {
                 playerList.RemoveAt(i);
             }
@@ -48,7 +48,7 @@ public class EventManager : MonoBehaviour
 
         for (int i = 0; i < playerList.Count; i++)
         {
-            if (playerList.ElementAt(i).name == player.name)
+            if (playerList.ElementAt(i).name == player.name || playerList.ElementAt(i).gameObject.activeSelf == false)
             {
                 playerList.RemoveAt(i);
                 break;

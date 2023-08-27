@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour
 
     public List<Rigidbody> _rigidbodyList = new List<Rigidbody>();
     public List<Rigidbody> RigidbodyList { get; private set; }
-    public BossAttackManager BossManager { get; private set; }
+    public BossHealthManager BossManager { get; private set; }
     public EventManager EventManager { get; private set; }
     [Inject] private EventManager eventManager;
 
@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
     {
         EventManager = eventManager;
         RigidbodyList = _rigidbodyList;
-        BossManager = GameObject.FindObjectOfType<BossAttackManager>();
+        BossManager = GameObject.FindObjectOfType<BossHealthManager>();
         if (IsMobileDevice())
         {
             _playerHorizontalSpeed = 3;
